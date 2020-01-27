@@ -24,7 +24,7 @@ public class BoardUtils {
 
     }
 
-    public static boolean isValidCoordinate(final int candidateDestinationCoordinate) {
+    public static boolean isValidTileCoordinate(final int candidateDestinationCoordinate) {
         return  candidateDestinationCoordinate >=0 && candidateDestinationCoordinate < 64;
     }
 
