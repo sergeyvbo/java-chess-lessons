@@ -20,7 +20,7 @@ public class Bishop extends Piece {
 
     public Bishop(final Alliance pieceAlliance, final int piecePosition) {
 
-        super(pieceAlliance, piecePosition);
+        super(PieceType.BISHOP, pieceAlliance, piecePosition);
     }
 
     @Override
@@ -54,6 +54,11 @@ public class Bishop extends Piece {
             }
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.BISHOP.toString();
     }
 
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {

@@ -19,7 +19,7 @@ public class Knight extends Piece {
 
     public Knight(final Alliance pieceAlliance, final int piecePosition)
     {
-        super(pieceAlliance, piecePosition);
+        super(PieceType.KNIGHT, pieceAlliance, piecePosition);
     }
 
     @Override
@@ -52,6 +52,11 @@ public class Knight extends Piece {
             }
         }
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.toString();
     }
 
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {

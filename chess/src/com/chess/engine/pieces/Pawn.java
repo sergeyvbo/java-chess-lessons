@@ -16,7 +16,7 @@ public class Pawn extends Piece {
 
     public Pawn(final Alliance pieceAlliance, final int piecePosition) {
 
-        super(pieceAlliance, piecePosition);
+        super(PieceType.PAWN, pieceAlliance, piecePosition);
     }
 
     @Override
@@ -69,5 +69,10 @@ public class Pawn extends Piece {
         }
 
         return ImmutableList.copyOf(legalMoves);
+    }
+
+    @Override
+    public String toString() {
+        return PieceType.PAWN.toString();
     }
 }
