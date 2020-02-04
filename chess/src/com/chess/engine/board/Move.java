@@ -6,12 +6,16 @@ public abstract class Move {
 
     final Board board;
     final Piece movedPiece;
-    final int destinationCoordinates;
+    final int destinationCoordinate;
 
-    public Move(final Board board, final Piece movedPiece, final int destinationCoordinates) {
+    public Move(final Board board, final Piece movedPiece, final int destinationCoordinate) {
         this.board = board;
         this.movedPiece = movedPiece;
-        this.destinationCoordinates = destinationCoordinates;
+        this.destinationCoordinate = destinationCoordinate;
+    }
+
+    public int getDestinationCoordinate() {
+        return this.destinationCoordinate;
     }
 
     public static final class MajorMove extends Move {
