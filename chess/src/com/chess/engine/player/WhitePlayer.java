@@ -60,7 +60,6 @@ public class WhitePlayer extends Player {
                     //TODO add castle move
                 }
             }
-)
         }
 
         return ImmutableList.copyOf(kingCastles);
