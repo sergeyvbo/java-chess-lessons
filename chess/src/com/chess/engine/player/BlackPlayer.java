@@ -5,11 +5,15 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.pieces.Rook;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.chess.engine.board.Move.KingSideCastleMove;
+import static com.chess.engine.board.Move.QueenSideCastleMove;
 
 public class BlackPlayer extends Player {
     public BlackPlayer(final Board board,
@@ -34,7 +38,8 @@ public class BlackPlayer extends Player {
     }
 
     @Override
-    protected Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals) {
+    protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+                                                    final Collection<Move> opponentsLegals) {
         final List<Move> kingCastles = new ArrayList<>();
         if (this.playerKing.isFirstMove() && !this.isInCheck()) {
             //blacks king side castle
@@ -45,8 +50,12 @@ public class BlackPlayer extends Player {
                         Player.calculateAttackOnTile(6, opponentsLegals).isEmpty() &&
                         rookTile.getPiece().getPieceType().isRook()) {
                     if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove()) {
-                        // TODO add a castlemove!
-                        kingCastles.add(null);
+                        kingCastles.add(new KingSideCastleMove(this.board,
+                                                               this.playerKing,
+                                                               6,
+                                                               (Rook) rookTile.getPiece(),
+                                                               rookTile.getTileCoordinate(),
+                                                               5));
                     }
                 }
             }
@@ -57,11 +66,15 @@ public class BlackPlayer extends Player {
 
                 final Tile rookTile = this.board.getTile(0);
                 if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove()) {
-                    //TODO add castle move
+                    kingCastles.add(new QueenSideCastleMove(this.board,
+                                                            this.playerKing,
+                                                            2,
+                                                            (Rook)rookTile.getPiece(),
+                                                            rookTile.getTileCoordinate(),
+                                                            3));
                 }
             }
         }
-
         return ImmutableList.copyOf(kingCastles);
     }
 }
