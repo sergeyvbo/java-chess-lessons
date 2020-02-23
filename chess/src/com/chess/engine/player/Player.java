@@ -34,7 +34,7 @@ public abstract class Player {
     }
 
     public Collection<Move> getLegalMoves() {
-        return legalMoves;
+        return this.legalMoves;
     }
 
     protected static Collection<Move> calculateAttackOnTile(final int piecePosition, final Collection<Move> moves) {

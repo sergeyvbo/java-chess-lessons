@@ -16,12 +16,13 @@ public abstract class Piece {
 
     Piece(final PieceType pieceType,
           final Alliance pieceAlliance,
-          final int piecePosition) {
+          final int piecePosition,
+          final boolean isFirstMove) {
         this.pieceType = pieceType;
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
         // TODO more work here!
-        this.isFirstMove = false;
+        this.isFirstMove = isFirstMove;
         this.cachedHashCode = computeHashCode();
     }
 
