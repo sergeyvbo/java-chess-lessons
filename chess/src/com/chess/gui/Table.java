@@ -55,7 +55,7 @@ public class Table {
         this.chessBoard = Board.createStandardBoard();
         this.boardPanel = new BoardPanel();
         this.boardDirection = BoardDirection.NORMAL;
-        this.highlightLegalMoves = false;
+        this.highlightLegalMoves = true;
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.setVisible(true);
     }
@@ -107,7 +107,7 @@ public class Table {
 
         preferencesMenu.addSeparator();
 
-        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+        final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", true);
 
         legalMoveHighlighterCheckBox.addActionListener(new ActionListener() {
             @Override
