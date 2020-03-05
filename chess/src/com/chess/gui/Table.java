@@ -175,6 +175,40 @@ public class Table {
         abstract BoardDirection opposite();
     }
 
+    public static class MoveLog {
+
+        private final List<Move> moves;
+
+        MoveLog() {
+            this.moves = new ArrayList<>();
+        }
+
+        public List<Move> getMoves() {
+            return this.moves;
+        }
+
+        public void addMove(final Move move) {
+            this.moves.add(move);
+        }
+
+        public int size() {
+            return this.moves.size();
+        }
+
+        public void clear() {
+            this.moves.clear();
+        }
+
+        public boolean removeMove(final Move move) {
+            return this.moves.remove(move);
+        }
+
+        public Move removeMove(int index) {
+            return this.moves.remove(index);
+        }
+
+    }
+
     private class TilePanel extends JPanel {
 
         private final int tileId;
@@ -297,15 +331,15 @@ public class Table {
         }
 
         private void assignTileColor() {
-            if (BoardUtils.EIGHTH_RANK[this.tileId] ||
-                BoardUtils.SIXTH_RANK[this.tileId] ||
-                BoardUtils.FOURTH_RANK[this.tileId] ||
-                BoardUtils.SECOND_RANK[this.tileId]) {
+            if (BoardUtils.INSTANCE.EIGHTH_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.SIXTH_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.FOURTH_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.SECOND_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
-            } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
-                BoardUtils.FIFTH_RANK[this.tileId] ||
-                BoardUtils.THIRD_RANK[this.tileId] ||
-                BoardUtils.FIRST_RANK[this.tileId]) {
+            } else if (BoardUtils.INSTANCE.SEVENTH_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.FIFTH_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.THIRD_RANK[this.tileId] ||
+                BoardUtils.INSTANCE.FIRST_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }

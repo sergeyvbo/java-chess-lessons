@@ -141,10 +141,10 @@ public abstract class Move {
             return super.equals(otherAttackMove) && getAttackedPiece().equals(otherAttackMove.getAttackedPiece());
         }
 
-        @Override
+        /*@Override
         public Board execute() {
             return null;
-        }
+        }*/
 
         @Override
         public boolean isAttack() {
@@ -291,7 +291,7 @@ public abstract class Move {
 
     public static final class NullMove extends Move {
         public NullMove() {
-            super(null, null, -1);
+            super(null, -1);
         }
 
         @Override
