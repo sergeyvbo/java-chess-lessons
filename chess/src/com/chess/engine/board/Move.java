@@ -5,6 +5,8 @@ import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 
+import static com.chess.engine.board.BoardUtils.getPositionAtCoordinate;
+
 public abstract class Move {
 
     protected final Board board;
@@ -109,7 +111,7 @@ public abstract class Move {
 
         @Override
         public String toString() {
-            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+            return movedPiece.getPieceType().toString() + getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
 
@@ -206,6 +208,11 @@ public abstract class Move {
             builder.setEnPassantPawn(movedPawn);
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
+        }
+
+        @Override
+        public String toString() {
+            return getPositionAtCoordinate(getDestinationCoordinate());
         }
     }
 

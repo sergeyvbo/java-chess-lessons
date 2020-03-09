@@ -28,20 +28,24 @@ import static javax.swing.SwingUtilities.*;
 public class Table {
 
     private final JFrame gameFrame;
+    private final GameHistoryPanel gameHistoryPanel;
+    private final TakenPiecesPanel takenPiecesPanel;
     private final BoardPanel boardPanel;
+    private final MoveLog moveLog;
+
     private Board chessBoard;
 
     private Tile sourceTile;
     private Tile destinationTile;
     private Piece humanMovedPiece;
     private BoardDirection boardDirection;
+
     private boolean highlightLegalMoves;
 
     private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600,600);
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-
-    private static String defaultPieceImagesPath = "chess/img/";
+    public static String defaultPieceImagesPath = "chess/img/";
 
     private final Color lightTileColor = Color.decode("#FFCE9E");
     private final Color darkTileColor = Color.decode("#D18B47");
@@ -53,10 +57,15 @@ public class Table {
         this.gameFrame.setJMenuBar(tableMenuBar);
         this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
         this.chessBoard = Board.createStandardBoard();
+        this.gameHistoryPanel = new GameHistoryPanel();
+        this.takenPiecesPanel = new TakenPiecesPanel();
         this.boardPanel = new BoardPanel();
+        this.moveLog = new MoveLog();
         this.boardDirection = BoardDirection.NORMAL;
         this.highlightLegalMoves = true;
+        this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+        this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
         this.gameFrame.setVisible(true);
     }
 
@@ -246,7 +255,7 @@ public class Table {
                             final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
                             if (transition.getMoveStatus().isDone()) {
                                 chessBoard = transition.getTransitionBoard();
-                                // TODO add the move made to the move log
+                                moveLog.addMove(move);
                             }
                             sourceTile = null;
                             destinationTile = null;
@@ -255,6 +264,8 @@ public class Table {
                         invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                gameHistoryPanel.redo(chessBoard, moveLog);
+                                takenPiecesPanel.redo(moveLog);
                                 boardPanel.drawBoard(chessBoard);
                             }
                         });
@@ -331,15 +342,15 @@ public class Table {
         }
 
         private void assignTileColor() {
-            if (BoardUtils.INSTANCE.EIGHTH_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.SIXTH_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.FOURTH_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.SECOND_RANK[this.tileId]) {
+            if (BoardUtils.EIGHTH_RANK[this.tileId] ||
+                BoardUtils.SIXTH_RANK[this.tileId] ||
+                BoardUtils.FOURTH_RANK[this.tileId] ||
+                BoardUtils.SECOND_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 == 0 ? lightTileColor : darkTileColor);
-            } else if (BoardUtils.INSTANCE.SEVENTH_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.FIFTH_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.THIRD_RANK[this.tileId] ||
-                BoardUtils.INSTANCE.FIRST_RANK[this.tileId]) {
+            } else if (BoardUtils.SEVENTH_RANK[this.tileId] ||
+                BoardUtils.FIFTH_RANK[this.tileId] ||
+                BoardUtils.THIRD_RANK[this.tileId] ||
+                BoardUtils.FIRST_RANK[this.tileId]) {
                 setBackground(this.tileId % 2 != 0 ? lightTileColor : darkTileColor);
             }
         }

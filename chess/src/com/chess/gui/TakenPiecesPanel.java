@@ -17,6 +17,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.chess.gui.Table.MoveLog;
+import static com.chess.gui.Table.defaultPieceImagesPath;
 
 public class TakenPiecesPanel extends JPanel {
 
@@ -88,8 +89,8 @@ public class TakenPiecesPanel extends JPanel {
             }
         }
         for (final Piece takenPiece : blackTakenPieces) {
-            try  {final BufferedImage image = ImageIO.read(new File("img/"
-                    + takenPiece.toString().substring(0, 1) + "" + takenPiece.toString()));
+            try  {final BufferedImage image = ImageIO.read(new File(defaultPieceImagesPath
+                    + takenPiece.getPieceAlliance().toString().substring(0, 1) + "" + takenPiece.toString() + ".png"));
                 final ImageIcon icon = new ImageIcon(image);
                 final JLabel imageLabel = new JLabel();
                 this. northPanel.add(imageLabel);
