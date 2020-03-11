@@ -57,6 +57,10 @@ public abstract class Move {
                getMovedPiece().equals(otherMove.getMovedPiece());
     }
 
+    public Board getBoard() {
+        return this.board;
+    }
+
     public int getCurrentCoordinate() {
         return this.getMovedPiece().getPiecePosition();
     }
@@ -241,6 +245,61 @@ public abstract class Move {
             builder.setPiece(this.movedPiece.movePiece(this));
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
+        }
+    }
+
+    public static final class PawnPromotion extends Move {
+
+        final Move decoratedMove;
+        final Pawn promotedPawn;
+
+        public PawnPromotion(final Move decoratedMove) {
+            super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), decoratedMove.getDestinationCoordinate());
+            this.decoratedMove = decoratedMove;
+            this.promotedPawn = (Pawn) decoratedMove.getMovedPiece();
+        }
+
+        @Override
+        public int hashCode() {
+            return decoratedMove.hashCode() + (31 * promotedPawn.hashCode());
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return this == other || other instanceof PawnPromotion && super.equals(other);
+        }
+
+        @Override
+        public Board execute() {
+
+            final Board pawnMoveBoard = this.decoratedMove.execute();
+            final Board.Builder builder = new Builder();
+            for (final Piece piece : pawnMoveBoard.currentPlayer().getActivePieces()) {
+                if (!this.promotedPawn.equals(piece)) {
+                    builder.setPiece(piece);
+                }
+            }
+            for (final Piece piece : pawnMoveBoard.currentPlayer().getOpponent().getActivePieces()) {
+                builder.setPiece(piece);
+            }
+            builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+            builder.setMoveMaker(pawnMoveBoard.currentPlayer().getAlliance());
+            return builder.build();
+        }
+
+        @Override
+        public boolean isAttack() {
+            return this.decoratedMove.isAttack();
+        }
+
+        @Override
+        public Piece getAttackedPiece() {
+            return this.decoratedMove.getAttackedPiece();
+        }
+
+        @Override
+        public String toString() {
+            return  "";
         }
     }
 

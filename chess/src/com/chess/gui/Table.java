@@ -324,8 +324,12 @@ public class Table {
             if (highlightLegalMoves) {
                 for(final Move move : pieceLegalMoves(board)) {
                     if (move.getDestinationCoordinate() == this.tileId) {
+                        MoveTransition transition = board.currentPlayer().makeMove(move);
+                        if (!transition.getMoveStatus().isDone()) {
+                            continue;
+                        }
                         try {
-                            add(new JLabel(new ImageIcon(ImageIO.read(new File("chess/img/legalMove.png")))));
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File(defaultPieceImagesPath + "legalMove.png")))));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

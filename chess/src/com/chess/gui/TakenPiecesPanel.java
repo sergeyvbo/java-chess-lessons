@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.chess.gui.Table.MoveLog;
@@ -62,38 +61,30 @@ public class TakenPiecesPanel extends JPanel {
             }
         }
 
-        Collections.sort(whiteTakenPieces, new Comparator<Piece>() {
+        Collections.sort(whiteTakenPieces, (o1, o2) -> Ints.compare(o1.getPieceValue(), o2.getPieceValue()));
 
-            @Override
-            public int compare(Piece o1, Piece o2) {
-                return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
-            }
-        });
-
-        Collections.sort(blackTakenPieces, new Comparator<Piece>() {
-
-            @Override
-            public int compare(Piece o1, Piece o2) {
-                return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
-            }
-        });
+        Collections.sort(blackTakenPieces, (o1, o2) -> Ints.compare(o1.getPieceValue(), o2.getPieceValue()));
 
         for (final Piece takenPiece : whiteTakenPieces) {
-            try  {final BufferedImage image = ImageIO.read(new File("img/"
-                        + takenPiece.toString().substring(0, 1) + "" + takenPiece.toString()));
+            String filename = defaultPieceImagesPath
+                    + takenPiece.getPieceAlliance().toString().substring(0, 1)
+                    + "" + takenPiece.toString() + ".png";
+            try  {final BufferedImage image = ImageIO.read(new File(filename));
             final ImageIcon icon = new ImageIcon(image);
-            final JLabel imageLabel = new JLabel();
-            this. southPanel.add(imageLabel);
+            final JLabel imageLabel = new JLabel(icon);
+            this.southPanel.add(imageLabel);
             } catch (final IOException e) {
                 e.printStackTrace();
             }
         }
         for (final Piece takenPiece : blackTakenPieces) {
-            try  {final BufferedImage image = ImageIO.read(new File(defaultPieceImagesPath
-                    + takenPiece.getPieceAlliance().toString().substring(0, 1) + "" + takenPiece.toString() + ".png"));
+            String filename = defaultPieceImagesPath
+                    + takenPiece.getPieceAlliance().toString().substring(0, 1)
+                    + "" + takenPiece.toString() + ".png";
+            try  {final BufferedImage image = ImageIO.read(new File(filename));
                 final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this. northPanel.add(imageLabel);
+                final JLabel imageLabel = new JLabel(icon);
+                this.northPanel.add(imageLabel);
             } catch (final IOException e) {
                 e.printStackTrace();
             }
