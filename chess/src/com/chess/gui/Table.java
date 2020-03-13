@@ -360,13 +360,10 @@ public class Table extends Observable {
             addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(final MouseEvent e) {
-
                     if (isRightMouseButton(e)) {
-
                         sourceTile = null;
                         destinationTile = null;
                         humanMovedPiece = null;
-
                     } else if (isLeftMouseButton(e)) {
                         //first click
                         if (sourceTile == null) {
@@ -374,19 +371,29 @@ public class Table extends Observable {
                             humanMovedPiece = sourceTile.getPiece();
                             if (humanMovedPiece == null) {
                                 sourceTile = null;
+                            } else if (humanMovedPiece.getPieceAlliance() != chessBoard.currentPlayer().getAlliance()) {
+                                humanMovedPiece = null;
+                                sourceTile = null;
                             }
                         } else {
                             //second click
                             destinationTile = chessBoard.getTile(tileId);
-                            final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
-                            final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
-                            if (transition.getMoveStatus().isDone()) {
-                                chessBoard = transition.getTransitionBoard();
-                                moveLog.addMove(move);
+                            final Move move = Move.MoveFactory.createMove(chessBoard,
+                                                sourceTile.getTileCoordinate(), destinationTile.getTileCoordinate());
+                            if (destinationTile.isTileOccupied() && destinationTile.getPiece().getPieceAlliance() == chessBoard.currentPlayer().getAlliance()) {
+                                sourceTile = destinationTile;
+                                destinationTile = null;
+                                humanMovedPiece = sourceTile.getPiece();
+                            } else {
+                                final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+                                if (transition.getMoveStatus().isDone()) {
+                                    chessBoard = transition.getTransitionBoard();
+                                    moveLog.addMove(move);
+                                }
+                                sourceTile = null;
+                                destinationTile = null;
+                                humanMovedPiece = null;
                             }
-                            sourceTile = null;
-                            destinationTile = null;
-                            humanMovedPiece = null;
                         }
                         invokeLater(() -> {
                             gameHistoryPanel.redo(chessBoard, moveLog);
